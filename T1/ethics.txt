@@ -1,0 +1,10 @@
+Accessing files in your classmate's "pub" directory raises an important ethical issue, even though they are technically open for viewing due to the permissions set. This situation requires us to think carefully about what is right and what is wrong.
+
+The designation of a directory as "pub" and its permissions can be interpreted as an implicit invitation to access. In a school setting, sharing files for group work or study is usually normal. However, the ethical appropriateness of accessing these files does not depend solely on these technical settings. Ethical behavior in digital spaces includes not only what is technically feasible, but also what is morally justified.
+
+Even if you don't have any malicious intent, viewing these files without explicit permission can be considered a "harmless wrong." This term encapsulates actions that might not cause direct harm but still violate ethical principles, in this case, the principles of privacy and trust. Just because a door is unlocked doesn't mean you can walk into someone's home without asking.
+
+In addition, the nature of the document is an important aspect. If the content is sensitive or involves personal privacy, access without explicit consent may cause serious privacy damage.
+
+In short, just because you can see the documents does not mean you should. In such cases, ethical decision-making should be guided by respect for privacy, the intent behind file sharing, and the principle of consent. You should only access these documents if it is clear or obvious from the context that they are intended for public viewing.
+
