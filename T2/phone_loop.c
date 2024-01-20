@@ -5,10 +5,10 @@ int main() {
     int index;
     int result;
 
-    // Read the 10-character string
+   
     scanf("%10s", phone);
 
-    // Continuously read integers until the input stream is closed
+    
     while ((result = scanf("%d", &index)) != EOF) {
         if (result == 1) {
             if (index == -1) {
@@ -17,13 +17,12 @@ int main() {
                 printf("%c\n", phone[index]);
             } else {
                 printf("ERROR\n");
-                return 1;  // Return 1 immediately if the input is out of the specified range
+                return 1;  
             }
         } else {
-            // Clear the input buffer if scanf fails to match an integer
+           
             while (getchar() != '\n');
         }
     }
 
-    return 0;  // Return 0 on normal program termination
-}
+    return 0; 
