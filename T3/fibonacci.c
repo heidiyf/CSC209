@@ -15,6 +15,30 @@
  */
 
 /* Write your solution here */
+void fib(int **sequence, int size) {
+     if (size <= 0) {
+        *sequence = NULL;
+        return;
+    }
+    *sequence = malloc(size * sizeof(int));
+    if (*sequence == NULL) {
+        perror("Memory allocation failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // Initialize first 2 elements
+    (*sequence)[0] = 0;
+    if (size > 1) {
+        (*sequence)[1] = 1;
+    }
+
+    // Generate the rest of the Fibonacci sequence
+    for (int i = 2; i < size; i++) {
+        (*sequence)[i] = (*sequence)[i-1] + (*sequence)[i-2];
+    }
+    return;
+}
+
 
 
 int main(int argc, char **argv) {
