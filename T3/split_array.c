@@ -11,8 +11,23 @@
    division.
 */
 int **split_array(const int *s, int length) {
+    int evenCount = (length + 1) / 2; 
+    int oddCount = length / 2;       
+
+    int** result = malloc(2 * sizeof(int*));
+
+    result[0] = malloc(evenCount * sizeof(int));
+    result[1] = malloc(oddCount* sizeof(int));
 
 
+    for (int i = 0, e = 0, o = 0; i < length; i++) {
+        if (i % 2 == 0) {
+            result[0][e++] = s[i];
+        } else {
+            result[1][o++] = s[i];
+        }
+    }
+    return result;
 }
 
 /* Return a pointer to an array of ints with size elements.
@@ -22,18 +37,22 @@ int **split_array(const int *s, int length) {
  */
 
 int *build_array(char **strs, int size) {
+    int *arr_ptr = malloc(size * sizeof(int));
 
+    for (int i = 0; i < size; i++) {
+        arr_ptr[i] = strtol(strs[i + 1], NULL, 10);
+    }
 
+    return arr_ptr;
 }
-
 
 int main(int argc, char **argv) {
     /* Replace the comments in the next two lines with the appropriate
        arguments.  Do not add any additional lines of code to the main
        function or make other changes.
      */
-    int *full_array = build_array(/* fill in the arguments*/);
-    int **result = split_array(full_array, /* fill in this argument */);
+    int *full_array = build_array(argv, argc - 1);
+    int **result = split_array(full_array, argc - 1);
 
     printf("Original array:\n");
     for (int i = 0; i < argc - 1; i++) {
