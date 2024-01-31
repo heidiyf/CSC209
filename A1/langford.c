@@ -15,15 +15,25 @@ void print_array(int numbers[], int size){
 }
 
 bool is_langford_pairing(int size, const int arr[]) {
-    
     if (size % 2 != 0) {
         return false; // Langford pairings must have an even number of elements.
+    }
+    for (int i = 0; i < size - 1; ++i) {
+        if (arr[i] == 0 && arr[i + 1] == 0) {
+            return false; // Invalid if two adjacent zeros are found
+        }
+    }
+
+    int n = size / 2; // In a valid Langford sequence, numbers range from 1 to n
+    int *count = calloc(n + 1, sizeof(int));
+    if (!count) {
+        return false; // Handle memory allocation failure
     }
 
     int *arr2 = malloc(sizeof(int) * size);
     if (!arr2) {
-        // Handle memory allocation failure
-        return false;
+        free(count);
+        return false; // Handle memory allocation failure
     }
     memcpy(arr2, arr, sizeof(int) * size);
 
@@ -31,26 +41,38 @@ bool is_langford_pairing(int size, const int arr[]) {
         if (arr2[i] == 0) { // set to zero if already checked, skip
             continue;
         }
+        if (arr2[i] > size/2){
+            free(arr2);
+            free(count);
+            return false;
+        }
+        count[arr2[i]]++; // Increment count for this number
+
         int num = arr2[i];
         int targetIndex = i + num + 1;
         if (num != arr2[targetIndex] || targetIndex >= size){
             free(arr2);
+            free(count);
             return false;
         }
         arr2[i] = 0;
         arr2[targetIndex] = 0;
     }
-    // at this point, finished checking all the pairs. if all zero -> true, else false
-
-    for (int i = 0; i < size; i++) {
-        if (arr2[i] != 0) {
+6
+    // Check if each number from 1 to n appears exactly twice
+    for (int i = 1; i <= n; i++) {
+        if (count[i] != 2) {
             free(arr2);
-            return false;
+            free(count);
+            return false; // Invalid if any number doesn't appear exactly twice
         }
     }
+    
     free(arr2);
-    return true;
+    free(count);
+    return true; // If reached here, it's a valid Langford pairing
 }
+
 
 int ceiling(double n){
     int int_part = (int)n; // Get the integer part of n
@@ -172,7 +194,7 @@ int main(int argc, char *argv[]) {
         char *endptr;
         int value = strtol(argv[2], &endptr, 10);
 
-        if (endptr && endptr[0] != '\0') {
+        if ((endptr && endptr[0] != '\0') || (value < 0)) {
             fprintf(stderr, "error: %s is not an integer.\n", argv[2]);
             exit(1);
         } else { // n is properly specified
