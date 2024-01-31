@@ -41,7 +41,7 @@ bool is_langford_pairing(int size, const int arr[]) {
         if (arr2[i] == 0) { // set to zero if already checked, skip
             continue;
         }
-        if (arr2[i] > size/2){
+        if ((arr2[i] > size/2) || (arr2[i] < 0)){ // check if number out of range OR number smaller than 0
             free(arr2);
             free(count);
             return false;
@@ -58,7 +58,7 @@ bool is_langford_pairing(int size, const int arr[]) {
         arr2[i] = 0;
         arr2[targetIndex] = 0;
     }
-6
+
     // Check if each number from 1 to n appears exactly twice
     for (int i = 1; i <= n; i++) {
         if (count[i] != 2) {
@@ -73,13 +73,15 @@ bool is_langford_pairing(int size, const int arr[]) {
     return true; // If reached here, it's a valid Langford pairing
 }
 
-
 int ceiling(double n){
-    int int_part = (int)n; // Get the integer part of n
-    if (n > 0 && n - (double)int_part > 0) {
-        return int_part + 1; // If n is positive and has a fractional part, add 1 to the integer part
+    float val = n / 4;
+    int val2 = (int) n / 4;
+
+    if (val == val2){
+        return val;
+    } else {
+        return val2 + 1;
     }
-    return int_part; // If n is an integer or negative, return the integer part
 }
 
 void reverse_array(const int *original, int *reversed, int size) {
@@ -89,7 +91,7 @@ void reverse_array(const int *original, int *reversed, int size) {
 }
 
 void create_langford_pairing(int n) { // from the youtube
-    int x = ceiling(n/4);
+    int x = ceiling(n);
     int a = 2 * x - 1;
     int b = 4 * x - 2;
     int c = 4 * x - 1;
@@ -135,12 +137,12 @@ void create_langford_pairing(int n) { // from the youtube
         final_array[final_index++] = s_reverse[i];
     }
 
-    // Add reversed p to the final sequence
+    // reversed p 
     for (int i = 0; i < p_index; i++) {
         final_array[final_index++] = p_reverse[i];
     }
 
-    // Add b, p sequence, c, s sequence, d
+    // Add b, p sequence, c, s sequence 
     final_array[final_index++] = b;
     for (int i = 0; i < p_index; i++) {
         final_array[final_index++] = p[i];
@@ -149,19 +151,27 @@ void create_langford_pairing(int n) { // from the youtube
     for (int i = 0; i < s_index; i++) {
         final_array[final_index++] = s[i];
     }
-    final_array[final_index++] = d;
 
-    // Add reversed r to the final sequence
+
+    // d or a depends on the mod
+    if (n % 4 == 0){
+        final_array[final_index++] = d;
+    } else { // n % 4 == 3
+        final_array[final_index++] = a;
+    }
+    
+
+    // reversed r
     for (int i = 0; i < r_index; i++) {
         final_array[final_index++] = r_reverse[i];
     }
 
-    // Add reversed q to the final sequence
+    // reversed q
     for (int i = 0; i < q_index; i++) {
         final_array[final_index++] = q_reverse[i];
     }
 
-    // Add b, a, q sequence, c, r sequence, a, d
+    // Add b, a, q sequence, c, r sequence
     final_array[final_index++] = b;
     final_array[final_index++] = a;
     for (int i = 0; i < q_index; i++) {
@@ -171,12 +181,13 @@ void create_langford_pairing(int n) { // from the youtube
     for (int i = 0; i < r_index; i++) {
         final_array[final_index++] = r[i];
     }
-    final_array[final_index++] = a;
-    final_array[final_index++] = d;
 
-    // Print the final Langford sequence
+    // a, d is optional
+    if (n % 4 == 0){
+        final_array[final_index++] = a;
+        final_array[final_index++] = d;
+    }
     print_array(final_array, final_index);
-
 }
 
 int main(int argc, char *argv[]) {
@@ -194,13 +205,13 @@ int main(int argc, char *argv[]) {
         char *endptr;
         int value = strtol(argv[2], &endptr, 10);
 
-        if ((endptr && endptr[0] != '\0') || (value < 0)) {
+        if (endptr && endptr[0] != '\0') {
             fprintf(stderr, "error: %s is not an integer.\n", argv[2]);
             exit(1);
         } else { // n is properly specified
             printf("Creating a langford pairing with n=%d\n", value);
 
-            if ((value % 4 == 1) || (value % 4 == 2)) {
+            if ((value % 4 == 1) || (value % 4 == 2) || value <= 0) {
                 printf("No results found.\n");
                 return 0;
             }  else { 
