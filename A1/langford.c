@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
+ 
 void print_array(int numbers[], int size){
     printf("[");
     for (int i = 0; i < size; ++i) {
@@ -18,6 +18,8 @@ bool is_langford_pairing(int size, const int arr[]) {
     if (size % 2 != 0) {
         return false; // Langford pairings must have an even number of elements.
     }
+    
+    // Check for two adjacent zeros
     for (int i = 0; i < size - 1; ++i) {
         if (arr[i] == 0 && arr[i + 1] == 0) {
             return false; // Invalid if two adjacent zeros are found
@@ -25,51 +27,47 @@ bool is_langford_pairing(int size, const int arr[]) {
     }
 
     int n = size / 2; // In a valid Langford sequence, numbers range from 1 to n
-    int *count = calloc(n + 1, sizeof(int));
-    if (!count) {
-        return false; // Handle memory allocation failure
+    int expectedSum = n * (n + 1); // The expected sum of numbers in a Langford sequence
+    int sum = 0; // To accumulate the sum of all numbers in the sequence
+
+    for (int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+    
+    if (sum != expectedSum) {
+        return false; // If the sum doesn't match, it's not a valid Langford pairing
     }
 
     int *arr2 = malloc(sizeof(int) * size);
     if (!arr2) {
-        free(count);
         return false; // Handle memory allocation failure
     }
     memcpy(arr2, arr, sizeof(int) * size);
 
-    for (int i = 0; i < size; i++){
-        if (arr2[i] == 0) { // set to zero if already checked, skip
-            continue;
+    for (int i = 0; i < size; i++) {
+        if (arr2[i] == 0) {
+            continue; // set to zero if already checked, skip
         }
-        if ((arr2[i] > size/2) || (arr2[i] < 0)){ // check if number out of range OR number smaller than 0
+        if (arr2[i] > n) {
             free(arr2);
-            free(count);
-            return false;
+            return false; // Number is outside the valid range
         }
-        count[arr2[i]]++; // Increment count for this number
 
         int num = arr2[i];
         int targetIndex = i + num + 1;
-        if (num != arr2[targetIndex] || targetIndex >= size){
+
+        // Check if the target index is within bounds and the values match
+        if (targetIndex >= size || arr2[targetIndex] != num) {
             free(arr2);
-            free(count);
-            return false;
+            return false; // Invalid pairing or out of bounds
         }
+
+        // Mark the indices as checked
         arr2[i] = 0;
         arr2[targetIndex] = 0;
     }
-
-    // Check if each number from 1 to n appears exactly twice
-    for (int i = 1; i <= n; i++) {
-        if (count[i] != 2) {
-            free(arr2);
-            free(count);
-            return false; // Invalid if any number doesn't appear exactly twice
-        }
-    }
     
     free(arr2);
-    free(count);
     return true; // If reached here, it's a valid Langford pairing
 }
 
