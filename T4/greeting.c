@@ -46,10 +46,11 @@ int main(int argc, char **argv) {
     int size_available = sizeof(greeting) - size_used - 1;
 
     // Append a space before the name if there's enough space.
-    if (size_available > 0) {
-        strncat(greeting, " ", 1);
-        size_available -= 1;  
-        size_used += 1;  
+    if (size_available > 1) { // Ensure there's space for the space and the null terminator.
+        greeting[size_used] = ' ';
+        greeting[size_used + 1] = '\0'; // Set the next character to the null terminator.
+        size_used += 1; 
+        size_available -= 1; 
     }
     // Append the name, ensuring the result is null-terminated.
     if (size_available > 0) {
