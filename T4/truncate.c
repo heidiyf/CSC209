@@ -12,7 +12,20 @@
     the string "fun" and returns 5.
 */
 
-
+int truncate(char* sen, int n){
+    int original_len = strlen(sen);
+    
+    // Check if the string length is greater than n
+    if (original_len > n) {
+        // Truncate the string by setting the character at position n to null terminator
+        sen[n] = '\0';
+        // Return the number of characters removed
+        return original_len - n;
+    }
+    
+    // If the string has n or fewer characters, return 0
+    return 0;
+}
 
 int main(int argc, char **argv) {
     /* Do not change the main function */

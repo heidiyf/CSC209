@@ -26,6 +26,18 @@
 */
 
 // Write the function strip_q_marks here
+int strip_q_marks(char* sentence){
+    int count = 0;
+    for (int i = strlen(sentence) - 1; i >= 0; i--){
+        if (sentence[i] == '?'){
+            count += 1;
+            sentence[i] = '\0';
+        } else{
+            break;
+        }
+    }
+    return count;
+}
 
 
 int main(int argc, char **argv) {

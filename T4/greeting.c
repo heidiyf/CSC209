@@ -36,8 +36,25 @@ int main(int argc, char **argv) {
     char greeting[20];
     char *name = argv[2];
 
-    // Your code goes here
+    
+    strncpy(greeting, argv[1], sizeof(greeting) - 1);
+    greeting[sizeof(greeting) - 1] = '\0';  // Ensure null termination.
 
+    // Calculate the available space in the greeting array.
+    // -1 to ensure there's space for the null terminator after concatenation.
+    int size_used = strlen(greeting);
+    int size_available = sizeof(greeting) - size_used - 1;
+
+    // Append a space before the name if there's enough space.
+    if (size_available > 0) {
+        strncat(greeting, " ", 1);
+        size_available -= 1;  
+        size_used += 1;  
+    }
+    // Append the name, ensuring the result is null-terminated.
+    if (size_available > 0) {
+        strncat(greeting, name, size_available);
+    }
 
     printf("%s\n", greeting);
     return 0;
